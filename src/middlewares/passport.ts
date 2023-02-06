@@ -9,7 +9,7 @@ const passportInitializer = (app: Express) => {
 
 const isAuthenticated = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    if (req.isAuthenticated()) throw new UnauthenticatedError()
+    if (!req.isAuthenticated()) throw new UnauthenticatedError()
     next()
   } catch (error: CustomError) {
     console.log(error.status, error.message, error.field)
