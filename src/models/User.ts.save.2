@@ -18,10 +18,10 @@ passport.use(new GoogleStrategy({
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
     console.log(profile)
-    await User.findOne({ email: profile.emails[0].value }, (err, user) => {
-      if (!user)
+    const user = await User.findOne({ email: profile.emails[0].value }).catch(console.error)
+    if (!user) {
+      user = new User({ email: profile.email, googleId: profile.id })
       return cb(err, user);
-    });
   }
 ))
 
