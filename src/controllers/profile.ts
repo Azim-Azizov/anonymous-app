@@ -18,11 +18,11 @@ export const patchProfileController = async (req: Request, res: Response) => {
   res.json({ method: req.method, path: req.path, profile: profile })
 }
 
-export const getGoogleController = async (req: Request, res: Response) => {
+export const getGoogleLinkController = async (req: Request, res: Response) => {
   await loginGoogle(req, res, "google-link")
 }
 
-export const getGoogleResponseController = async (req: Request, res: Response) => {
+export const getGoogleLinkResponseController = async (req: Request, res: Response) => {
   await authenticateGoogle(req, res, "google-link")
 }
 
