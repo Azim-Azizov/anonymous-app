@@ -10,6 +10,7 @@ passport.use(User.createStrategy())
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -17,20 +18,8 @@ passport.use(new GoogleStrategy({
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
     console.log(profile)
-    await User.findOrCreate({ email: profile.emails[0].value, googleId: profile.id }, (err, user) => {
-      return cb(err, user);
-    });
-  }
-))
-
-passport.use("google-link", new GoogleStrategy({
-  clientID: process.env.GOOGLE_LINK_CLIENT_ID,
-  clientSecret: process.env.GOOGLE_LINK_CLIENT_SECRET,
-  callbackURL: "https://anonymous.svdev.me/api/profile/link/google/response"
-},
-  async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
-    console.log(profile)
-    await User.updateOne({ email: profile.emails[0].value }, { googleId: profile.id}, (err, user) => {
+    await User.findOne({ email: profile.emails[0].value }, (err, user) => {
+      if (!user)
       return cb(err, user);
     });
   }

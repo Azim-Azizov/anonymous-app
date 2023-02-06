@@ -8,6 +8,8 @@ export const login = async (req: Request, res: Response) => {
 
     const { email, password } = req.body
 
+    console.log(email, password)
+
     if ((email === undefined || email === null || email.trim()) && (password === undefined || password === null || password.trim() === "")) throw new MissingFieldError("{email and password}")
 
     else if (email === undefined || email === null || email.trim() === "") throw new MissingFieldError("{email}")
@@ -87,12 +89,21 @@ export const register = async (req: Request, res: Response) => {
   }
 }
 
-export const loginGoogle = async (req: Request, res: Response) => {
-  await passport.authenticate("google", { scope: ["openid", "profile", "email"] })(req, res)
+export const loginGoogle = async (req: Request, res: Response, strategy: string) => {
+  await passport.authenticate(strategy, { scope: ["openid", "profile", "email"] })(req, res)
 }
 
-export const authenticateGoogle = async (req: Request, res: Response) => {
-  await passport.authenticate("google", { successRedirect: "/api/profile", failureRedirect: "/auth/login" })(req, res)
+export const authenticateGoogle = async (req: Request, res: Response, strategy: string) => {
+  await passport.authenticate(strategy, (err, user, info) => {
+    try {
+      console.log(err, user, info)
+      if (err) throw new InternalServerError(`{${err.name} : ${err.message}}`)
+      else res.status(200).json({ message: "Success"})
+    } catch (error: CustomError) {
+      console.log(error.status, error.message, error.field)
+      res.status(error.status).json({ message: error.message })
+    }
+  })(req, res)
 }
 
 export const logout = async (req: Request, res: Response) => {

@@ -55,6 +55,8 @@ export class OauthNotSupportedError extends CustomError {
     this.status = 1015
     this.message = "This email does not support oauth login. Enable it in the profile settings."
     this.field = field
+  }
+}
 
 export class SamePasswordError extends CustomError {
   constructor() {
