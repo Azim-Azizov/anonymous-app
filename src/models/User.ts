@@ -16,7 +16,7 @@ passport.use("google", new GoogleStrategy({
   callbackURL: "https://anonymous.svdev.me/api/auth/google/response"
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
-    console.log(profile)
+    console.log("google", profile)
     await User.findOrCreate({ email: profile.emails[0].value, googleId: profile.id }, (err, user) => {
       return cb(err, user);
     });
@@ -29,7 +29,7 @@ passport.use("google-link", new GoogleStrategy({
   callbackURL: "https://anonymous.svdev.me/api/profile/link/google/response"
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
-    console.log(profile)
+    console.log("google-link", profile)
     await User.updateOne({ email: profile.emails[0].value }, { googleId: profile.id}, (err, user) => {
       return cb(err, user);
     });
