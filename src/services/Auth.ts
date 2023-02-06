@@ -90,6 +90,7 @@ export const register = async (req: Request, res: Response) => {
 }
 
 export const loginGoogle = async (req: Request, res: Response, strategy: string) => {
+  console.log(strategy)
   await passport.authenticate(strategy, { scope: ["openid", "profile", "email"] })(req, res)
 }
 
