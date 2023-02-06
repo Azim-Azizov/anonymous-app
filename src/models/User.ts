@@ -32,8 +32,10 @@ passport.use("google-link", new GoogleStrategy({
     console.log("google-link", profile)
     try {
       const user = await User.updateOne({ email: profile.emails[0].value }, { $set: { googleId: profile.id }})
-    } catch (err) return cb(err, null)
-    return cb(null, user);
+    } catch (err) {
+      return cb(err, null)
+    }
+    return cb(null, user)
   }
 ))
 
