@@ -19,7 +19,7 @@ passport.use("google", new GoogleStrategy({
     console.log("google", profile)
     try {
       const user = await User.findOrCreate({ email: profile.emails[0].value, googleId: profile.id })
-      return cb(err, user);
+      return cb(null, user);
     } catch (err) {
       return cb(err, null)
     }
