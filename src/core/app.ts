@@ -3,6 +3,7 @@ import morgan from "morgan"
 
 const app = express()
 app.use(morgan('dev'))
+app.use(express.static("views"))
 
 import { expressinitializer } from "../middlewares/express"
 
