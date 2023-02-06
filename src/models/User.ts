@@ -17,9 +17,12 @@ passport.use("google", new GoogleStrategy({
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
     console.log("google", profile)
-    await User.findOrCreate({ email: profile.emails[0].value, googleId: profile.id }, (err, user) => {
+    try {
+      const user = await User.findOrCreate({ email: profile.emails[0].value, googleId: profile.id })
       return cb(err, user);
-    });
+    } catch (err) {
+      return cb(err, null)
+    }
   }
 ))
 
@@ -32,6 +35,7 @@ passport.use("google-link", new GoogleStrategy({
     console.log("google-link", profile)
     try {
       const user = await User.updateOne({ email: profile.emails[0].value }, { $set: { googleId: profile.id }})
+      console.log("User:", user)
       return cb(null, user)
     } catch (err) {
       return cb(err, null)
