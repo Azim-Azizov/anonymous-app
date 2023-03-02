@@ -32,14 +32,8 @@ passport.use("google-link", new GoogleStrategy({
   callbackURL: "https://anonymous.svdev.me/api/profile/link/google/response"
 },
   async (accessToken: string, refreshToken: string, profile: object, cb: Function) => {
-    console.log("google-link", req.user, profile)
-    try {
-      const user = await User.updateOne({ email: profile.emails[0].value }, { $set: { googleId: profile.id }})
-      console.log("User:", user)
-      return cb(null, user)
-    } catch (err) {
-      return cb(err, null)
-    }
+    console.log("google-link", profile)
+    return cb(null, user)
   }
 ))
 
